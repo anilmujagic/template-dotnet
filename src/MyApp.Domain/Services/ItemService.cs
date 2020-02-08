@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MyApp.Common.Extensions;
 using MyApp.Core.Dtos;
 using MyApp.Core.Interfaces;
 using MyApp.Core.Models;
@@ -16,12 +17,12 @@ namespace MyApp.Domain.Services
         {
         }
 
-        public IEnumerable<ItemDto> GetItems(string name)
+        public IEnumerable<ItemDto> GetItems(string nameSearch)
         {
             using var uow = NewUnitOfWork();
             return NewRepository<Item>(uow)
                 .GetAs(
-                    i => i.Name.Contains(name),
+                    i => nameSearch.IsNullOrWhiteSpace() || i.Name.Contains(nameSearch),
                     i => new ItemDto
                     {
                         ItemId = i.ItemId,
