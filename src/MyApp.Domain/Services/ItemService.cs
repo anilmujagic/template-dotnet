@@ -21,13 +21,14 @@ namespace MyApp.Domain.Services
             using var uow = NewUnitOfWork();
             return NewRepository<Item>(uow)
                 .GetAs(
-                    c => c.Name.Contains(name),
-                    c => new ItemDto
+                    i => i.Name.Contains(name),
+                    i => new ItemDto
                     {
-                        ItemId = c.ItemId,
-                        Name = c.Name
+                        ItemId = i.ItemId,
+                        Name = i.Name,
+                        IsProcessed = i.IsProcessed
                     })
-                .OrderBy(c => c.Name);
+                .OrderBy(i => i.Name);
         }
     }
 }
