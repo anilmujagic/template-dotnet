@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Common", "MyApp.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Core", "MyApp.Core\MyApp.Core.csproj", "{CC4D595F-1E16-4C3C-A52F-FB52287F5376}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Domain", "MyApp.Domain\MyApp.Domain.csproj", "{8D8AA9BD-6672-4622-8143-8CCF98774149}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Infrastructure", "MyApp.Infrastructure\MyApp.Infrastructure.csproj", "{F793F0DD-45AF-4A86-B692-EB8FC1CF605C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{CC4D595F-1E16-4C3C-A52F-FB52287F5376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC4D595F-1E16-4C3C-A52F-FB52287F5376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC4D595F-1E16-4C3C-A52F-FB52287F5376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D8AA9BD-6672-4622-8143-8CCF98774149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D8AA9BD-6672-4622-8143-8CCF98774149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D8AA9BD-6672-4622-8143-8CCF98774149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D8AA9BD-6672-4622-8143-8CCF98774149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F793F0DD-45AF-4A86-B692-EB8FC1CF605C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F793F0DD-45AF-4A86-B692-EB8FC1CF605C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F793F0DD-45AF-4A86-B692-EB8FC1CF605C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F793F0DD-45AF-4A86-B692-EB8FC1CF605C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
