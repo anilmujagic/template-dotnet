@@ -39,6 +39,7 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
 
     # Optionally initialize your new git repo
     $ git init
+    $ git add .
     ```
 
 - Rename the code
