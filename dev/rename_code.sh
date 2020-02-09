@@ -9,6 +9,22 @@ cd ..
 #old_name=$(basename $(find ./src -name *.sln) '.sln')
 old_name="$1"
 new_name="$2"
+
+if [ -z "$old_name" ] || [ -z "$new_name" ]; then
+    echo "ERROR: Script must be called with two parameters:"
+    echo "    1. OldName"
+    echo "    2. NewName"
+    echo "EXAMPLE: ./rename_code.sh MyApp MyRealAppName"
+    popd
+    exit 1;
+fi
+
+if ! [[ $new_name =~ ^[A-Za-z][A-Za-z0-9]+$ ]]; then
+    echo "Project name must contain only letters, numbers and underscores (e.g. MyAwesomeApp)."
+    popd
+    exit 1;
+fi
+
 echo "Old name: $old_name"
 echo "New name: $new_name"
 
