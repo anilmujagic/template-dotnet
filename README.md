@@ -52,7 +52,7 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
     $ dev/rename_code.sh MyApp MyAwesomeNewProject
     ```
 
-    Output looks like this:
+    Output:
 
     ```
     Old name: MyApp
