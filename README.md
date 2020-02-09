@@ -85,7 +85,7 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
 
     ```bash
     # Add some test data into the DB
-    $ psql -d my_awesome_new_project -c "INSERT INTO app.item (name, is_processed) values ('Alice', TRUE), ('Bob', FALSE)"
+    $ psql -d my_awesome_new_project -c "INSERT INTO app.item (name, is_processed) VALUES ('Alice', TRUE), ('Bob', FALSE)"
 
     # Query the API
     $ curl http://localhost:5000/items
