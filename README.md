@@ -39,7 +39,7 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
     # Remove the .git directory corresponding to this repo
     $ rm -rf .git
 
-    # Optionally initialize your new git repo
+    # Initialize your new git repo
     $ git init
     $ git add .
     ```
