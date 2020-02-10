@@ -1,6 +1,7 @@
 # .NET Core Application Template
 
-This is a template for a typical .NET Core server application, serving as a quick start for a new project.
+This is a template for a typical .NET Core application, serving as a quick start for a new project.
+Although conceptualized as a server application, the template code is easily convertible to any type of application using database for data persistence.
 
 The template covers following aspects:
 
