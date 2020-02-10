@@ -66,6 +66,12 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
     Renaming DB...
     ```
 
+    Get rid of the inrelevant README content
+
+    ```bash
+    $ echo '# MyAwesomeNewProject' > README.md
+    ```
+
 - Create the DB
 
     ```bash
