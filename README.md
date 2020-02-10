@@ -105,3 +105,14 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
     ```
     [{"itemId":1,"name":"Foo","isProcessed":true},{"itemId":2,"name":"Bar","isProcessed":false}]
     ```
+
+- Commit and push to your new GitHub repo
+
+    Create `my-awesome-new-project` repo on GitHub first, and then:
+
+    ```bash
+    $ git add .
+    $ git commit -m 'Initial commit'
+    $ git remote add origin https://github.com/you/my-awesome-new-project.git
+    $ git push -u origin master
+    ```
