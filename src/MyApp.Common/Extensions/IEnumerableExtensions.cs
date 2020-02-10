@@ -62,5 +62,11 @@ namespace MyApp.Common.Extensions
         {
             return enumerable.IsNullOrEmpty() ? new T?() : enumerable.Single();
         }
+
+        public static T? FirstOrNullable<T>(this IEnumerable<T> enumerable)
+            where T : struct
+        {
+            return enumerable.IsNullOrEmpty() ? new T?() : enumerable.First();
+        }
     }
 }
