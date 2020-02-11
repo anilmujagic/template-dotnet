@@ -395,7 +395,7 @@ namespace {0}
             propsCode,
             constructorCode)
         |> trim
-        |> fun txt -> txt + "\n"
+        |> sprintf "%s\n"
 
     (entityName, entityCode)
 
@@ -532,7 +532,7 @@ namespace {1}
 """
 
     String.Format(dbContextTemplate, entitiesNamespace, dbContextNamespace, dbContextName, dbSets, entityConfigs).Trim()
-    |> fun txt -> txt + "\n"
+    |> sprintf "%s\n"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Write to files
