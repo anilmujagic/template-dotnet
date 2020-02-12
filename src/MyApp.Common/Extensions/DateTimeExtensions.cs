@@ -8,6 +8,9 @@ namespace MyApp.Common.Extensions
 
         public static string IsoDateString(this DateTime dateTime) => dateTime.ToString("yyyy-MM-dd");
 
+        public static DateTime SetKind(this DateTime dateTime, DateTimeKind kind) =>
+            DateTime.SpecifyKind(dateTime, kind);
+
         public static long ToUnixTimeSeconds(this DateTime dateTime) =>
             new DateTimeOffset(dateTime).ToUnixTimeSeconds();
 
