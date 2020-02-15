@@ -34,6 +34,15 @@ namespace MyApp.Api
 
             // app.UseHttpsRedirection();
 
+#if DEBUG
+            app.UseCors(builder =>
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .Build());
+#endif
+
             app.UseRouting();
 
             app.UseAuthorization();
