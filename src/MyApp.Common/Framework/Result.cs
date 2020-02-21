@@ -19,8 +19,6 @@ namespace MyApp.Common.Framework
             Alerts = alerts.ToList();
         }
 
-        public bool Failed => !Successful;
-
         public static Result Success(params Alert[] alerts) => new Result(true, alerts);
         public static Result Success(IEnumerable<Alert> alerts) => new Result(true, alerts);
         public static Result Failure(params Alert[] alerts) => new Result(false, alerts);
