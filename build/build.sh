@@ -36,7 +36,7 @@ for project_name in $project_names; do
 
     pushd "$project_temp_dir"
     mv appsettings.json appsettings.json.local
-    tar czf "$output_dir/$project_name.tar.gz" --exclude={appsettings.json,*.pdb} *
+    zip "$output_dir/$project_name.zip" -rq * -x 'appsettings.json' -x '*.pdb'
     popd
 done
 
@@ -44,7 +44,7 @@ done
 # Database
 ################################################################################
 pushd "../db"
-tar czf "$output_dir/db.tar.gz" *
+zip "$output_dir/db.zip" -rq *
 popd
 
 ################################################################################
