@@ -1,4 +1,4 @@
-﻿using MyApp.Core.Interfaces;
+using MyApp.Core.Interfaces;
 
 namespace MyApp.Infrastructure.DI;
 

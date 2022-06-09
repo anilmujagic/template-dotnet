@@ -1,4 +1,4 @@
-﻿namespace MyApp.Core.Interfaces;
+namespace MyApp.Core.Interfaces;
 
 // For generic entity repository
 public interface IRepositoryFactory

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MyApp.Common.Extensions;
 
 namespace MyApp.Common;

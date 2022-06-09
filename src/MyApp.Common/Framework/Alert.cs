@@ -1,4 +1,4 @@
-﻿namespace MyApp.Common.Framework;
+namespace MyApp.Common.Framework;
 
 public enum AlertType
 {

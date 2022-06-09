@@ -1,4 +1,4 @@
-﻿using MyApp.Core.Enums;
+using MyApp.Core.Enums;
 
 namespace MyApp.Core.Interfaces;
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MyApp.Core.Enums;
 using MyApp.Core.Interfaces;
 

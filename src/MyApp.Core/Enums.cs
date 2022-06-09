@@ -1,4 +1,4 @@
-﻿namespace MyApp.Core
+namespace MyApp.Core
 {
     namespace Enums
     {

@@ -1,4 +1,4 @@
-﻿namespace MyApp.Core.Interfaces;
+namespace MyApp.Core.Interfaces;
 
 public interface IAppConfigurationProvider
 {

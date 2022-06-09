@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using MyApp.Common.Extensions;
 using MyApp.Core;
