@@ -1,5 +1,5 @@
 #I __SOURCE_DIRECTORY__
-#r "Npgsql.dll"
+#r "nuget: Npgsql, 6.0.*"
 
 open System
 open System.Data
@@ -18,9 +18,9 @@ let password = "postgres"
 let database = "my_app"
 let schema = "app"
 let entitiesNamespace = "MyApp.Core.Models"
-let entitiesOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../../src/MyApp.Core/Models")
+let entitiesOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../src/MyApp.Core/Models")
 let dbContextNamespace = "MyApp.Infrastructure.Data.EF"
-let dbContextOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../../src/MyApp.Infrastructure/Data/EF")
+let dbContextOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../src/MyApp.Infrastructure/Data/EF")
 let dbContextName = "AppDb"
 let ignoredTables =
     [
