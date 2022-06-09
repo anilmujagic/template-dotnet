@@ -11,6 +11,12 @@ namespace MyApp.Common.Extensions
             return fn(x);
         }
 
+        public static T? Map<T>(this T? nullable, Func<T, T> fn)
+            where T : struct
+        {
+            return nullable.HasValue ? fn(nullable.Value) : nullable;
+        }
+
         public static T Tap<T>(this T x, Action<T> act)
         {
             act(x);
