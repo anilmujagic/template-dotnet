@@ -31,8 +31,6 @@ namespace MyApp.Common.Framework
         public static Result<T> Success<T>(T data) => new Result<T>(true, data, Array.Empty<Alert>());
         public static Result<T> Success<T>(T data, params Alert[] alerts) => new Result<T>(true, data, alerts);
         public static Result<T> Success<T>(T data, IEnumerable<Alert> alerts) => new Result<T>(true, data, alerts);
-        //public static Result<T> Failure<T>(T data, params Alert[] alerts) => new Result<T>(false, data, alerts);
-        //public static Result<T> Failure<T>(T data, IEnumerable<Alert> alerts) => new Result<T>(false, data, alerts);
         public static Result<T> Failure<T>(IEnumerable<Alert> alerts) =>
             new Result<T>(false, default(T), alerts);
         public static Result<T> Failure<T>(params string[] errors) =>
