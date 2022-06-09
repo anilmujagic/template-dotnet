@@ -8,7 +8,7 @@ The template covers following aspects:
 - Database quick start:
     - Scripts for creating a database and setting initial permissions.
     - Simple manual change-scripts workflow.
-    - A script for reseting the database and re-applying all the change-scripts.
+    - A script for resetting the database and re-applying all the change-scripts.
 - Generating model classes and Entity Framework [DAL](https://en.wikipedia.org/wiki/Data_access_layer) mapping from DB schema.
 - Implementation of a generic Repository and Unit of Work patterns, for abstracting away the EF [DAL](https://en.wikipedia.org/wiki/Data_access_layer).
 - Wiring up the dependency injection.
@@ -66,7 +66,7 @@ Let's assume you're starting a new `MyAwesomeNewProject` and want to use the tem
     Renaming DB...
     ```
 
-    Get rid of the inrelevant README content
+    Get rid of the irrelevant README content
 
     ```bash
     $ echo '# MyAwesomeNewProject' > README.md
