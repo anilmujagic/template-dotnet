@@ -17,7 +17,7 @@ The template covers following aspects:
 
 ## Prerequisites
 
-- .NET Core (template is based on v3.1, but it's easy to adjust to different version)
+- .NET Core (template is based on v6.0, but it's easy to adjust to different version)
 - F# interactive command line tool (`dotnet fsi`)
 - PostgreSQL
 - Bash shell
