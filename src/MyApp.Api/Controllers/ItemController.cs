@@ -3,23 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Core.Dtos;
 using MyApp.Core.Interfaces;
 
-namespace MyApp.Api.Controllers
+namespace MyApp.Api.Controllers;
+
+[ApiController]
+[Route("items")]
+public class ItemController : ControllerBase
 {
-    [ApiController]
-    [Route("items")]
-    public class ItemController : ControllerBase
+    private readonly IItemService _itemService;
+
+    public ItemController(IItemService itemService)
     {
-        private readonly IItemService _itemService;
+        _itemService = itemService;
+    }
 
-        public ItemController(IItemService itemService)
-        {
-            _itemService = itemService;
-        }
-
-        [HttpGet]
-        public IEnumerable<ItemDto> Get([FromQuery] string nameSearch)
-        {
-            return _itemService.GetItems(nameSearch);
-        }
+    [HttpGet]
+    public IEnumerable<ItemDto> Get([FromQuery] string nameSearch)
+    {
+        return _itemService.GetItems(nameSearch);
     }
 }

@@ -5,40 +5,39 @@ using MyApp.Core.Enums;
 using MyApp.Core.Interfaces;
 using MyApp.Infrastructure.Data.EF;
 
-namespace MyApp.Infrastructure.Data
+namespace MyApp.Infrastructure.Data;
+
+public class UnitOfWorkFactory : IUnitOfWorkFactory
 {
-    public class UnitOfWorkFactory : IUnitOfWorkFactory
-    {
 #if DEBUG
-        private static readonly ILoggerFactory EfLoggerFactory =
-            LoggerFactory.Create(builder =>
-            {
-                builder
-                    //.AddFilter(level => level >= LogLevel.Warning)
-                    .AddConsole();
-            });
-#endif
-
-        public IUnitOfWork Create(UnitOfWorkMode mode = UnitOfWorkMode.ReadOnly)
+    private static readonly ILoggerFactory EfLoggerFactory =
+        LoggerFactory.Create(builder =>
         {
-            var options = new DbContextOptionsBuilder()
-#if DEBUG
-                .UseLoggerFactory(EfLoggerFactory)
-                .EnableSensitiveDataLogging()
+            builder
+                //.AddFilter(level => level >= LogLevel.Warning)
+                .AddConsole();
+        });
 #endif
-                .UseNpgsql(Config.DB)
-                .Options;
 
-            var db = new AppDb(options);
+    public IUnitOfWork Create(UnitOfWorkMode mode = UnitOfWorkMode.ReadOnly)
+    {
+        var options = new DbContextOptionsBuilder()
+#if DEBUG
+            .UseLoggerFactory(EfLoggerFactory)
+            .EnableSensitiveDataLogging()
+#endif
+            .UseNpgsql(Config.DB)
+            .Options;
 
-            db.ChangeTracker.LazyLoadingEnabled = false;
+        var db = new AppDb(options);
 
-            if (mode == UnitOfWorkMode.ReadOnly)
-            {
-                db.ChangeTracker.AutoDetectChangesEnabled = false;
-            }
+        db.ChangeTracker.LazyLoadingEnabled = false;
 
-            return new UnitOfWork(db, mode);
+        if (mode == UnitOfWorkMode.ReadOnly)
+        {
+            db.ChangeTracker.AutoDetectChangesEnabled = false;
         }
+
+        return new UnitOfWork(db, mode);
     }
 }

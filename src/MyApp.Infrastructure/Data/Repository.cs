@@ -7,237 +7,236 @@ using Microsoft.EntityFrameworkCore.Query;
 using MyApp.Core.Interfaces;
 using MyApp.Infrastructure.Data.EF;
 
-namespace MyApp.Infrastructure.Data
+namespace MyApp.Infrastructure.Data;
+
+public class Repository<T> : IRepository<T>
+    where T : class
 {
-    public class Repository<T> : IRepository<T>
-        where T : class
+    private readonly AppDb _db;
+
+    public Repository(AppDb db)
     {
-        private readonly AppDb _db;
+        _db = db ?? throw new ArgumentNullException(nameof(db));
+    }
 
-        public Repository(AppDb db)
+    public void Insert(T entity)
+    {
+        _db.Set<T>().Add(entity);
+    }
+
+    public void Insert(IEnumerable<T> entities)
+    {
+        _db.ChangeTracker.AutoDetectChangesEnabled = false;
+        _db.Set<T>().AddRange(entities);
+        _db.ChangeTracker.AutoDetectChangesEnabled = true;
+    }
+
+    public void Update(T entity)
+    {
+        _db.Entry(entity).State = EntityState.Modified;
+    }
+
+    public void Delete(T entity)
+    {
+        if (_db.Entry(entity).State == EntityState.Detached)
+            _db.Entry(entity).State = EntityState.Unchanged;
+        _db.Set<T>().Remove(entity);
+    }
+
+    public void Delete(IEnumerable<T> entities)
+    {
+        foreach(var entity in entities)
         {
-            _db = db ?? throw new ArgumentNullException(nameof(db));
+            Delete(entity);
         }
+    }
 
-        public void Insert(T entity)
-        {
-            _db.Set<T>().Add(entity);
-        }
+    public T GetByKey(params object[] keyValues)
+    {
+        return _db.Set<T>().Find(keyValues);
+    }
 
-        public void Insert(IEnumerable<T> entities)
-        {
-            _db.ChangeTracker.AutoDetectChangesEnabled = false;
-            _db.Set<T>().AddRange(entities);
-            _db.ChangeTracker.AutoDetectChangesEnabled = true;
-        }
+    public bool Exists(Expression<Func<T, bool>> whereCondition)
+    {
+        return _db.Set<T>().Any(whereCondition);
+    }
 
-        public void Update(T entity)
-        {
-            _db.Entry(entity).State = EntityState.Modified;
-        }
+    #region GetCount
 
-        public void Delete(T entity)
-        {
-            if (_db.Entry(entity).State == EntityState.Detached)
-                _db.Entry(entity).State = EntityState.Unchanged;
-            _db.Set<T>().Remove(entity);
-        }
+    public int GetCount()
+    {
+        return _db.Set<T>().Count();
+    }
 
-        public void Delete(IEnumerable<T> entities)
-        {
-            foreach(var entity in entities)
-            {
-                Delete(entity);
-            }
-        }
+    public int GetCount(Expression<Func<T, bool>> whereCondition)
+    {
+        return _db.Set<T>().Count(whereCondition);
+    }
 
-        public T GetByKey(params object[] keyValues)
-        {
-            return _db.Set<T>().Find(keyValues);
-        }
+    #endregion
 
-        public bool Exists(Expression<Func<T, bool>> whereCondition)
-        {
-            return _db.Set<T>().Any(whereCondition);
-        }
+    #region GetAll
 
-        #region GetCount
+    public IEnumerable<T> GetAll()
+    {
+        return _db.Set<T>().ToList();
+    }
 
-        public int GetCount()
-        {
-            return _db.Set<T>().Count();
-        }
+    public IEnumerable<T> GetAll<TInclude1>(
+        Expression<Func<T, TInclude1>> includeProperty1)
+    {
+        return this.Get(null, includeProperty1);
+    }
 
-        public int GetCount(Expression<Func<T, bool>> whereCondition)
-        {
-            return _db.Set<T>().Count(whereCondition);
-        }
+    public IEnumerable<T> GetAll<TInclude1, TInclude2>(
+        Expression<Func<T, TInclude1>> includeProperty1,
+        Expression<Func<T, TInclude2>> includeProperty2)
+    {
+        return this.Get(null, includeProperty1, includeProperty2);
+    }
 
-        #endregion
+    public IEnumerable<T> GetAll<TInclude1, TInclude2, TInclude3>(
+        Expression<Func<T, TInclude1>> includeProperty1,
+        Expression<Func<T, TInclude2>> includeProperty2,
+        Expression<Func<T, TInclude3>> includeProperty3)
+    {
+        return this.Get(null, includeProperty1, includeProperty2, includeProperty3);
+    }
 
-        #region GetAll
+    #endregion
 
-        public IEnumerable<T> GetAll()
-        {
-            return _db.Set<T>().ToList();
-        }
+    #region Get
 
-        public IEnumerable<T> GetAll<TInclude1>(
-            Expression<Func<T, TInclude1>> includeProperty1)
-        {
-            return this.Get(null, includeProperty1);
-        }
+    public IEnumerable<T> Get(
+        Expression<Func<T, bool>> whereCondition)
+    {
+        return this.Get<object>(whereCondition, null);
+    }
 
-        public IEnumerable<T> GetAll<TInclude1, TInclude2>(
-            Expression<Func<T, TInclude1>> includeProperty1,
-            Expression<Func<T, TInclude2>> includeProperty2)
-        {
-            return this.Get(null, includeProperty1, includeProperty2);
-        }
+    public IEnumerable<T> Get<TInclude1>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, TInclude1>> includeProperty1)
+    {
+        return this.Get<TInclude1, object>(whereCondition, includeProperty1, null);
+    }
 
-        public IEnumerable<T> GetAll<TInclude1, TInclude2, TInclude3>(
-            Expression<Func<T, TInclude1>> includeProperty1,
-            Expression<Func<T, TInclude2>> includeProperty2,
-            Expression<Func<T, TInclude3>> includeProperty3)
-        {
-            return this.Get(null, includeProperty1, includeProperty2, includeProperty3);
-        }
+    public IEnumerable<T> Get<TInclude1, TInclude2>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, TInclude1>> includeProperty1,
+        Expression<Func<T, TInclude2>> includeProperty2)
+    {
+        return this.Get<TInclude1, TInclude2, object>(whereCondition, includeProperty1, includeProperty2, null);
+    }
 
-        #endregion
-
-        #region Get
-
-        public IEnumerable<T> Get(
-            Expression<Func<T, bool>> whereCondition)
-        {
-            return this.Get<object>(whereCondition, null);
-        }
-
-        public IEnumerable<T> Get<TInclude1>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, TInclude1>> includeProperty1)
-        {
-            return this.Get<TInclude1, object>(whereCondition, includeProperty1, null);
-        }
-
-        public IEnumerable<T> Get<TInclude1, TInclude2>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, TInclude1>> includeProperty1,
-            Expression<Func<T, TInclude2>> includeProperty2)
-        {
-            return this.Get<TInclude1, TInclude2, object>(whereCondition, includeProperty1, includeProperty2, null);
-        }
-
-        public IEnumerable<T> Get<TInclude1, TInclude2, TInclude3>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, TInclude1>> includeProperty1,
-            Expression<Func<T, TInclude2>> includeProperty2,
-            Expression<Func<T, TInclude3>> includeProperty3)
-        {
-            return this.GetQuery(
+    public IEnumerable<T> Get<TInclude1, TInclude2, TInclude3>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, TInclude1>> includeProperty1,
+        Expression<Func<T, TInclude2>> includeProperty2,
+        Expression<Func<T, TInclude3>> includeProperty3)
+    {
+        return this.GetQuery(
                 whereCondition,
                 includeProperty1,
                 includeProperty2,
                 includeProperty3)
-                .ToList();
-        }
+            .ToList();
+    }
 
-        // Breadth traversal of navigation properties
-        private IQueryable<T> GetQuery<TInclude1, TInclude2, TInclude3>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, TInclude1>> includeProperty1,
-            Expression<Func<T, TInclude2>> includeProperty2,
-            Expression<Func<T, TInclude3>> includeProperty3)
-        {
-            var query = _db.Set<T>().AsQueryable();
+    // Breadth traversal of navigation properties
+    private IQueryable<T> GetQuery<TInclude1, TInclude2, TInclude3>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, TInclude1>> includeProperty1,
+        Expression<Func<T, TInclude2>> includeProperty2,
+        Expression<Func<T, TInclude3>> includeProperty3)
+    {
+        var query = _db.Set<T>().AsQueryable();
 
-            if (includeProperty1 != null)
-                query = query.Include(includeProperty1);
-            if (includeProperty2 != null)
-                query = query.Include(includeProperty2);
-            if (includeProperty3 != null)
-                query = query.Include(includeProperty3);
+        if (includeProperty1 != null)
+            query = query.Include(includeProperty1);
+        if (includeProperty2 != null)
+            query = query.Include(includeProperty2);
+        if (includeProperty3 != null)
+            query = query.Include(includeProperty3);
 
-            if (whereCondition != null)
-                query = query.Where(whereCondition);
+        if (whereCondition != null)
+            query = query.Where(whereCondition);
 
-            return query;
-        }
+        return query;
+    }
 
-        #endregion
+    #endregion
 
-        #region GetDeep
+    #region GetDeep
 
-        public IEnumerable<T> GetDeep<TInclude1, TInclude2>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
-            Expression<Func<TInclude1, TInclude2>> includeProperty2)
-        {
-            return this.GetDeepQuery(whereCondition, includeProperty1, includeProperty2)
-                .ToList();
-        }
+    public IEnumerable<T> GetDeep<TInclude1, TInclude2>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
+        Expression<Func<TInclude1, TInclude2>> includeProperty2)
+    {
+        return this.GetDeepQuery(whereCondition, includeProperty1, includeProperty2)
+            .ToList();
+    }
 
-        public IEnumerable<T> GetDeep<TInclude1, TInclude2, TInclude3>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
-            Expression<Func<TInclude1, ICollection<TInclude2>>> includeProperty2,
-            Expression<Func<TInclude2, TInclude3>> includeProperty3)
-        {
-            return this.GetDeepQuery(whereCondition, includeProperty1, includeProperty2, includeProperty3)
-                .ToList();
-        }
+    public IEnumerable<T> GetDeep<TInclude1, TInclude2, TInclude3>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
+        Expression<Func<TInclude1, ICollection<TInclude2>>> includeProperty2,
+        Expression<Func<TInclude2, TInclude3>> includeProperty3)
+    {
+        return this.GetDeepQuery(whereCondition, includeProperty1, includeProperty2, includeProperty3)
+            .ToList();
+    }
 
-        // Depth traversal of navigation properties (2 levels)
-        private IQueryable<T> GetDeepQuery<TInclude1, TInclude2>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
-            Expression<Func<TInclude1, TInclude2>> includeProperty2)
-        {
-            var query = _db.Set<T>().AsQueryable();
+    // Depth traversal of navigation properties (2 levels)
+    private IQueryable<T> GetDeepQuery<TInclude1, TInclude2>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
+        Expression<Func<TInclude1, TInclude2>> includeProperty2)
+    {
+        var query = _db.Set<T>().AsQueryable();
 
-            if (includeProperty1 != null)
-                query = query.Include(includeProperty1);
-            if (includeProperty2 != null)
-                query = (query as IIncludableQueryable<T, ICollection<TInclude1>>).ThenInclude(includeProperty2);
+        if (includeProperty1 != null)
+            query = query.Include(includeProperty1);
+        if (includeProperty2 != null)
+            query = (query as IIncludableQueryable<T, ICollection<TInclude1>>).ThenInclude(includeProperty2);
 
-            if (whereCondition != null)
-                query = query.Where(whereCondition);
+        if (whereCondition != null)
+            query = query.Where(whereCondition);
 
-            return query;
-        }
+        return query;
+    }
 
-        // Depth traversal of navigation properties (3 levels)
-        private IQueryable<T> GetDeepQuery<TInclude1, TInclude2, TInclude3>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
-            Expression<Func<TInclude1, ICollection<TInclude2>>> includeProperty2,
-            Expression<Func<TInclude2, TInclude3>> includeProperty3)
-        {
-            var query = _db.Set<T>().AsQueryable();
+    // Depth traversal of navigation properties (3 levels)
+    private IQueryable<T> GetDeepQuery<TInclude1, TInclude2, TInclude3>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
+        Expression<Func<TInclude1, ICollection<TInclude2>>> includeProperty2,
+        Expression<Func<TInclude2, TInclude3>> includeProperty3)
+    {
+        var query = _db.Set<T>().AsQueryable();
 
-            if (includeProperty1 != null)
-                query = query.Include(includeProperty1);
-            if (includeProperty2 != null)
-                query = (query as IIncludableQueryable<T, ICollection<TInclude1>>).ThenInclude(includeProperty2);
-            if (includeProperty3 != null)
-                query = (query as IIncludableQueryable<T, ICollection<TInclude2>>).ThenInclude(includeProperty3);
+        if (includeProperty1 != null)
+            query = query.Include(includeProperty1);
+        if (includeProperty2 != null)
+            query = (query as IIncludableQueryable<T, ICollection<TInclude1>>).ThenInclude(includeProperty2);
+        if (includeProperty3 != null)
+            query = (query as IIncludableQueryable<T, ICollection<TInclude2>>).ThenInclude(includeProperty3);
 
-            if (whereCondition != null)
-                query = query.Where(whereCondition);
+        if (whereCondition != null)
+            query = query.Where(whereCondition);
 
-            return query;
-        }
+        return query;
+    }
 
-        #endregion
+    #endregion
 
-        public IEnumerable<TOutput> GetAs<TOutput>(
-            Expression<Func<T, bool>> whereCondition,
-            Expression<Func<T, TOutput>> mapFunction)
-        {
-            return _db.Set<T>()
-                .Where(whereCondition)
-                .Select(mapFunction)
-                .ToList();
-        }
+    public IEnumerable<TOutput> GetAs<TOutput>(
+        Expression<Func<T, bool>> whereCondition,
+        Expression<Func<T, TOutput>> mapFunction)
+    {
+        return _db.Set<T>()
+            .Where(whereCondition)
+            .Select(mapFunction)
+            .ToList();
     }
 }

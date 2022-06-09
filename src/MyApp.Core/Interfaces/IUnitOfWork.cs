@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace MyApp.Core.Interfaces
+namespace MyApp.Core.Interfaces;
+
+public interface IUnitOfWork : IDisposable
 {
-    public interface IUnitOfWork : IDisposable
-    {
-        void Commit();
-    }
+    void Commit();
 }

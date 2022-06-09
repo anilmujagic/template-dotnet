@@ -1,9 +1,8 @@
 ﻿using MyApp.Core.Enums;
 
-namespace MyApp.Core.Interfaces
+namespace MyApp.Core.Interfaces;
+
+public interface IUnitOfWorkFactory
 {
-    public interface IUnitOfWorkFactory
-    {
-        IUnitOfWork Create(UnitOfWorkMode mode = UnitOfWorkMode.ReadOnly);
-    }
+    IUnitOfWork Create(UnitOfWorkMode mode = UnitOfWorkMode.ReadOnly);
 }

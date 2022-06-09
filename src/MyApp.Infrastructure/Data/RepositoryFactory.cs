@@ -1,13 +1,12 @@
 ﻿using MyApp.Core.Interfaces;
 
-namespace MyApp.Infrastructure.Data
+namespace MyApp.Infrastructure.Data;
+
+public class RepositoryFactory : IRepositoryFactory
 {
-    public class RepositoryFactory : IRepositoryFactory
+    public IRepository<T> Create<T>(IUnitOfWork unitOfWork)
+        where T : class
     {
-        public IRepository<T> Create<T>(IUnitOfWork unitOfWork)
-            where T : class
-        {
-            return new Repository<T>((unitOfWork as UnitOfWork).Db);
-        }
+        return new Repository<T>((unitOfWork as UnitOfWork).Db);
     }
 }

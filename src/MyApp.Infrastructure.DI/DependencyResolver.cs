@@ -1,15 +1,14 @@
 ﻿using MyApp.Core.Interfaces;
 
-namespace MyApp.Infrastructure.DI
+namespace MyApp.Infrastructure.DI;
+
+/// <summary>
+/// Used to resolve dependencies not managed by DI container.
+/// </summary>
+public static class DependencyResolver
 {
-    /// <summary>
-    /// Used to resolve dependencies not managed by DI container.
-    /// </summary>
-    public static class DependencyResolver
+    public static IAppConfigurationProvider GetConfigurationProvider()
     {
-        public static IAppConfigurationProvider GetConfigurationProvider()
-        {
-            return new AppSettingsConfigurationProvider();
-        }
+        return new AppSettingsConfigurationProvider();
     }
 }
