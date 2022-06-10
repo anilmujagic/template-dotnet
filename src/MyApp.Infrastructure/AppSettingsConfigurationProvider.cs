@@ -9,6 +9,7 @@ namespace MyApp.Infrastructure;
 public class AppSettingsConfigurationProvider : IAppConfigurationProvider
 {
     private readonly IConfigurationRoot _configuration;
+    private readonly CultureInfo _cultureInfo = CultureInfo.InvariantCulture;
 
     public AppSettingsConfigurationProvider()
     {
@@ -41,7 +42,7 @@ public class AppSettingsConfigurationProvider : IAppConfigurationProvider
     {
         var value = this.GetSetting(settingKey);
         if (!value.IsNullOrEmpty())
-            if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue))
+            if (int.TryParse(value, NumberStyles.Integer, _cultureInfo, out var intValue))
                 return intValue;
 
         return defaultValue;
@@ -51,7 +52,7 @@ public class AppSettingsConfigurationProvider : IAppConfigurationProvider
     {
         var value = this.GetSetting(settingKey);
         if (!value.IsNullOrEmpty())
-            if (decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var decimalValue))
+            if (decimal.TryParse(value, NumberStyles.AllowDecimalPoint, _cultureInfo, out var decimalValue))
                 return decimalValue;
 
         return defaultValue;

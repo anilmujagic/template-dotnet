@@ -9,23 +9,23 @@ namespace MyApp.Infrastructure.Data;
 
 public class UnitOfWorkFactory : IUnitOfWorkFactory
 {
-#if DEBUG
+    #if DEBUG
     private static readonly ILoggerFactory EfLoggerFactory =
         LoggerFactory.Create(builder =>
         {
             builder
-                //.AddFilter(level => level >= LogLevel.Warning)
+                // .AddFilter(level => level >= LogLevel.Warning)
                 .AddConsole();
         });
-#endif
+    #endif
 
     public IUnitOfWork Create(UnitOfWorkMode mode = UnitOfWorkMode.ReadOnly)
     {
         var options = new DbContextOptionsBuilder()
-#if DEBUG
+            #if DEBUG
             .UseLoggerFactory(EfLoggerFactory)
             .EnableSensitiveDataLogging()
-#endif
+            #endif
             .UseNpgsql(Config.DB)
             .Options;
 

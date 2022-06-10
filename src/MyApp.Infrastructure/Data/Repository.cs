@@ -134,11 +134,7 @@ public class Repository<T> : IRepository<T>
         Expression<Func<T, TInclude2>> includeProperty2,
         Expression<Func<T, TInclude3>> includeProperty3)
     {
-        return this.GetQuery(
-                whereCondition,
-                includeProperty1,
-                includeProperty2,
-                includeProperty3)
+        return this.GetQuery(whereCondition, includeProperty1, includeProperty2, includeProperty3)
             .ToList();
     }
 

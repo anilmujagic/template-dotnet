@@ -34,14 +34,14 @@ public class Startup
 
         // app.UseHttpsRedirection();
 
-#if DEBUG
+        #if DEBUG
         app.UseCors(builder =>
             builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .Build());
-#endif
+        #endif
 
         app.UseRouting();
 
