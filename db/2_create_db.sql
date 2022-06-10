@@ -8,7 +8,7 @@ CREATE DATABASE my_app;
 SET search_path TO public;
 
 -- Create extensions
---CREATE EXTENSION adminpack;
+-- CREATE EXTENSION adminpack;
 CREATE EXTENSION pgcrypto; -- UUID (Guid) Support
 
 -- Create schemas

@@ -12,8 +12,8 @@ new_name="$2"
 
 if [ -z "$old_name" ] || [ -z "$new_name" ]; then
     echo "ERROR: Script must be called with two parameters:"
-    echo "    1. OldName"
-    echo "    2. NewName"
+    echo "\t1. OldName"
+    echo "\t2. NewName"
     echo "EXAMPLE: ./rename_code.sh MyApp MyRealAppName"
     popd
     exit 1;
@@ -56,7 +56,11 @@ done
 
 # Rename code
 echo 'Renaming code...'
-grep -rl "$old_name" --include=*.{cs,csproj,sln,fsx,sh} --exclude-dir={.git,.idea,.vs,.vscode} --exclude=rename_code.sh . | while read -r file; do
+grep -rl "$old_name" \
+    --include=*.{cs, csproj, sln, fsx, sh} \
+    --exclude-dir={.git, .idea, .vs, .vscode} \
+    --exclude=rename_code.sh . \
+| while read -r file; do
     #echo "Renaming code in $file"
     sed -i -- "s/$old_name/$new_name/g" "$file"
     rm "${file}--"
@@ -64,7 +68,11 @@ done
 
 # Rename DB
 echo 'Renaming DB...'
-grep -rl "$old_db_name" --include=*.{sql,fsx,json} --exclude-dir={.git,.idea,.vs,.vscode} --exclude=rename_code.sh . | while read -r file; do
+grep -rl "$old_db_name" \
+    --include=*.{sql, fsx, json} \
+    --exclude-dir={.git, .idea, .vs, .vscode} \
+    --exclude=rename_code.sh . \
+| while read -r file; do
     #echo "Renaming DB in $file"
     sed -i -- "s/$old_db_name/$new_db_name/g" "$file"
     rm "${file}--"
