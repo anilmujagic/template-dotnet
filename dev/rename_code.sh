@@ -57,8 +57,8 @@ done
 # Rename code
 echo 'Renaming code...'
 grep -rl "$old_name" \
-    --include=*.{cs, csproj, sln, fsx, sh} \
-    --exclude-dir={.git, .idea, .vs, .vscode} \
+    --include=*.{cs,csproj,sln,fsx,sh} \
+    --exclude-dir={.git,.idea,.vs,.vscode} \
     --exclude=rename_code.sh . \
 | while read -r file; do
     #echo "Renaming code in $file"
@@ -69,8 +69,8 @@ done
 # Rename DB
 echo 'Renaming DB...'
 grep -rl "$old_db_name" \
-    --include=*.{sql, fsx, json} \
-    --exclude-dir={.git, .idea, .vs, .vscode} \
+    --include=*.{sql,fsx,json} \
+    --exclude-dir={.git,.idea,.vs,.vscode} \
     --exclude=rename_code.sh . \
 | while read -r file; do
     #echo "Renaming DB in $file"
