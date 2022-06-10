@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using MyApp.Common.Extensions;
 using MyApp.Core.Dtos;
 using MyApp.Core.Interfaces;

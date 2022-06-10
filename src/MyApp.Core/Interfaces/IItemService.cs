@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using MyApp.Core.Dtos;
 
 namespace MyApp.Core.Interfaces;

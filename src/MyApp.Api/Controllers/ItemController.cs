@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Core.Dtos;
 using MyApp.Core.Interfaces;

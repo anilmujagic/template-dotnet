@@ -23,6 +23,7 @@ let entitiesOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../src/MyApp.Core/M
 let dbContextNamespace = "MyApp.Infrastructure.Data.EF"
 let dbContextOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../src/MyApp.Infrastructure/Data/EF")
 let dbContextName = "AppDb"
+let implicitUsings = true
 let ignoredTables =
     [
         "database_version"
@@ -370,22 +371,25 @@ let generateEntity tableInfo =
         |> joinLines
         |> trim
 
+    let usings = """
+using System;
+using System.Collections.Generic;
+"""
+
     let entityTemplate = """
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // THIS CODE IS GENERATED - DO NOT CHANGE IT MANUALLY!
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
+{0}
+namespace {1};
 
-namespace {0};
-
-public partial class {1}
+public partial class {2}
 {{
-    {2}
+    {3}
 
-    public {1}()
+    public {2}()
     {{
-        {3}
+        {4}
     }}
 }}
 """
@@ -393,6 +397,7 @@ public partial class {1}
     let entityName = dbToPascalCase tableInfo.Name
     let entityCode =
         String.Format(entityTemplate,
+            (if implicitUsings then "" else usings),
             entitiesNamespace,
             entityName,
             propsCode,
@@ -512,29 +517,39 @@ var {1} = modelBuilder.Entity<{0}>()
         |> joinLines
         |> trim
 
+    let usings = """
+using System;
+using System.ComponentModel.DataAnnotations.Schema;"""
+
     let dbContextTemplate = """
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // THIS CODE IS GENERATED - DO NOT CHANGE IT MANUALLY!
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
+{0}
 using Microsoft.EntityFrameworkCore;
-using {0};
+using {1};
 
-namespace {1};
+namespace {2};
 
-public partial class {2} : DbContext
+public partial class {3} : DbContext
 {{
-    {3}
+    {4}
 
     private void ConfigureEntities(ModelBuilder modelBuilder)
     {{
-        {4}
+        {5}
     }}
 }}
 """
 
-    String.Format(dbContextTemplate, entitiesNamespace, dbContextNamespace, dbContextName, dbSets, entityConfigs).Trim()
+    String.Format(dbContextTemplate,
+        (if implicitUsings then "" else usings),
+        entitiesNamespace,
+        dbContextNamespace,
+        dbContextName,
+        dbSets,
+        entityConfigs
+    ).Trim()
     |> sprintf "%s\n"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

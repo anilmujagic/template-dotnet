@@ -1,4 +1,3 @@
-using System.IO;
 using System.Reflection;
 using MyApp.Core.Interfaces;
 

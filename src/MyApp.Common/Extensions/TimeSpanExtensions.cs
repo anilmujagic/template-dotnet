@@ -1,5 +1,3 @@
-using System;
-
 namespace MyApp.Common.Extensions;
 
 public static class TimeSpanExtensions
