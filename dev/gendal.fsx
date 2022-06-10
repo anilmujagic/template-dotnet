@@ -5,6 +5,7 @@ open System
 open System.Data
 open System.IO
 open System.Text
+open System.Text.RegularExpressions
 open Npgsql
 open NpgsqlTypes
 
@@ -279,6 +280,9 @@ let trimEnd (s : string) = s.TrimEnd()
 let indent (levels : int) (lines : string seq) = lines |> Seq.map (fun l -> "".PadLeft(levels * 4, ' ') + l)
 let joinLines (props : string seq) = String.Join(Environment.NewLine, props)
 
+let cleanText (text : string) =
+    Regex.Replace(text, "[ ]+\n", "\n");
+
 let pluralize (s : string) =
     let vowels = ["a"; "e"; "i"; "o"; "u"]
     let nextToLast = s.Substring(s.Length - 2, 1)
@@ -355,14 +359,14 @@ let generateEntity tableInfo =
         @ [""]  // One line between simple and navigation properties
         @ generateNavigationProperties ()
         @ (collectionNavigationProps |> List.map (fun (_, _, p) -> p))
-        |> indent 2
+        |> indent 1
         |> joinLines
         |> trim
 
     let constructorCode =
         collectionNavigationProps
         |> List.map (fun (n, t, _) -> sprintf "this.%s = new HashSet<%s>();" n t)
-        |> indent 3
+        |> indent 2
         |> joinLines
         |> trim
 
@@ -373,16 +377,15 @@ let generateEntity tableInfo =
 using System;
 using System.Collections.Generic;
 
-namespace {0}
-{{
-    public partial class {1}
-    {{
-        {2}
+namespace {0};
 
-        public {1}()
-        {{
-            {3}
-        }}
+public partial class {1}
+{{
+    {2}
+
+    public {1}()
+    {{
+        {3}
     }}
 }}
 """
@@ -396,6 +399,7 @@ namespace {0}
             constructorCode)
         |> trim
         |> sprintf "%s\n"
+        |> cleanText
 
     (entityName, entityCode)
 
@@ -408,7 +412,7 @@ let dbContextCode =
         |> List.sortBy (fun t -> t.Name)
         |> List.map (fun t ->
             String.Format("public virtual DbSet<{0}> {1} {{ get; set; }}", entityName t.Name, entitySetName t.Name))
-        |> indent 2
+        |> indent 1
         |> joinLines
         |> trim
 
@@ -504,7 +508,7 @@ var {1} = modelBuilder.Entity<{0}>()
         |> List.map entityConfig
         |> List.collect (fun code -> code.Split('\n') |> Array.toList)
         |> List.map trimEnd
-        |> indent 3
+        |> indent 2
         |> joinLines
         |> trim
 
@@ -517,16 +521,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using {0};
 
-namespace {1}
-{{
-    public partial class {2} : DbContext
-    {{
-        {3}
+namespace {1};
 
-        private void ConfigureEntities(ModelBuilder modelBuilder)
-        {{
-            {4}
-        }}
+public partial class {2} : DbContext
+{{
+    {3}
+
+    private void ConfigureEntities(ModelBuilder modelBuilder)
+    {{
+        {4}
     }}
 }}
 """
