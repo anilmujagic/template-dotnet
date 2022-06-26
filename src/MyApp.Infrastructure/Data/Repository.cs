@@ -191,10 +191,10 @@ public class Repository<T> : IRepository<T>
     }
 
     // Depth traversal of navigation properties (2 levels)
-    private IQueryable<T> GetDeepQuery<TInclude1, TInclude2>(
-        Expression<Func<T, bool>> whereCondition,
-        Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
-        Expression<Func<TInclude1, TInclude2>> includeProperty2)
+    protected internal IQueryable<T> GetDeepQuery<TInclude1, TInclude2>(
+        Expression<Func<T, bool>>? whereCondition,
+        Expression<Func<T, ICollection<TInclude1>>>? includeProperty1,
+        Expression<Func<TInclude1, TInclude2>>? includeProperty2)
     {
         var query = _db.Set<T>().AsQueryable();
 
@@ -210,11 +210,11 @@ public class Repository<T> : IRepository<T>
     }
 
     // Depth traversal of navigation properties (3 levels)
-    private IQueryable<T> GetDeepQuery<TInclude1, TInclude2, TInclude3>(
-        Expression<Func<T, bool>> whereCondition,
-        Expression<Func<T, ICollection<TInclude1>>> includeProperty1,
-        Expression<Func<TInclude1, ICollection<TInclude2>>> includeProperty2,
-        Expression<Func<TInclude2, TInclude3>> includeProperty3)
+    protected internal IQueryable<T> GetDeepQuery<TInclude1, TInclude2, TInclude3>(
+        Expression<Func<T, bool>>? whereCondition,
+        Expression<Func<T, ICollection<TInclude1>>>? includeProperty1,
+        Expression<Func<TInclude1, ICollection<TInclude2>>>? includeProperty2,
+        Expression<Func<TInclude2, TInclude3>>? includeProperty3)
     {
         var query = _db.Set<T>().AsQueryable();
 

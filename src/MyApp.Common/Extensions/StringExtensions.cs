@@ -15,12 +15,12 @@ public static class StringExtensions
         return string.IsNullOrWhiteSpace(str);
     }
 
-    public static bool ContainsAny(this string str, params string[] strings)
+    public static bool ContainsAny(this string? str, params string[] strings)
     {
         return str.ContainsAny(strings.AsEnumerable());
     }
 
-    public static bool ContainsAny(this string str, IEnumerable<string> strings)
+    public static bool ContainsAny(this string? str, IEnumerable<string>? strings)
     {
         if (str.IsNullOrEmpty() || strings == null)
             return false;
@@ -28,12 +28,12 @@ public static class StringExtensions
         return strings.Any(str.Contains);
     }
 
-    public static bool ContainsAll(this string str, params string[] strings)
+    public static bool ContainsAll(this string? str, params string[] strings)
     {
         return str.ContainsAll(strings.AsEnumerable());
     }
 
-    public static bool ContainsAll(this string str, IEnumerable<string> strings)
+    public static bool ContainsAll(this string? str, IEnumerable<string>? strings)
     {
         if (str.IsNullOrEmpty() || strings == null)
             return false;

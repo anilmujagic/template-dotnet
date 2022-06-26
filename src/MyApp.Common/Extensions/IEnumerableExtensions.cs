@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace MyApp.Common.Extensions;
 
 public static class IEnumerableExtensions
 {
-    public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+    public static bool IsNullOrEmpty<T>([NotNullWhen(returnValue: false)] this IEnumerable<T>? enumerable)
     {
         return enumerable == null || !enumerable.Any();
     }
