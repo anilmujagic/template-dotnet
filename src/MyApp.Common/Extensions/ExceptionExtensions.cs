@@ -21,7 +21,7 @@ public static class ExceptionExtensions
 
     public static string LogFormat(this Exception ex, bool messagesOnly = false)
     {
-        var exceptions = ex.Flatten();
+        var exceptions = ex.Flatten().ToList();
 
         var log = exceptions
             .Select(e => $"{e.GetType().FullName}: {e.Message}")

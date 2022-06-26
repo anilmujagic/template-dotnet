@@ -11,14 +11,14 @@ Config.SetConfigurationProvider(DependencyResolver.GetConfigurationProvider());
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Compose
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-var builder = WebApplication.CreateBuilder(args);
+var appBuilder = WebApplication.CreateBuilder(args);
 
-new DomainModule().Load(builder.Services);
-new InfrastructureModule().Load(builder.Services);
+new DomainModule().Load(appBuilder.Services);
+new InfrastructureModule().Load(appBuilder.Services);
 
-builder.Services.AddControllers();
+appBuilder.Services.AddControllers();
 
-var app = builder.Build();
+var app = appBuilder.Build();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Configure
