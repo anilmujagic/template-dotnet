@@ -27,7 +27,7 @@ public class ItemService : DataService, IItemService
                     Name = i.Name,
                     IsProcessed = i.IsProcessed
                 });
-            
+
         return items.OrderBy(i => i.Name);
     }
 }
