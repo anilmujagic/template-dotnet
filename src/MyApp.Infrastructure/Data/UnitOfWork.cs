@@ -15,12 +15,12 @@ public class UnitOfWork : IUnitOfWork
         _mode = mode;
     }
 
-    public void Commit()
+    public async Task Commit()
     {
         if (_mode == UnitOfWorkMode.ReadOnly)
             throw new InvalidOperationException("Commit is not allowed in read-only UnitOfWork.");
 
-        Db.SaveChanges();
+        await Db.SaveChangesAsync();
     }
 
     public void Dispose()

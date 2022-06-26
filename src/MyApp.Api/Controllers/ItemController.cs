@@ -16,8 +16,8 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ItemDto> Get([FromQuery] string nameSearch)
+    public async Task<IEnumerable<ItemDto>> Get([FromQuery] string nameSearch)
     {
-        return _itemService.GetItems(nameSearch);
+        return await _itemService.GetItems(nameSearch);
     }
 }

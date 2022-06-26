@@ -15,10 +15,10 @@ public class ItemService : DataService, IItemService
     {
     }
 
-    public IEnumerable<ItemDto> GetItems(string nameSearch)
+    public async Task<IEnumerable<ItemDto>> GetItems(string nameSearch)
     {
         using var uow = NewUnitOfWork();
-        return NewRepository<Item>(uow)
+        var items = await NewRepository<Item>(uow)
             .GetAs(
                 i => nameSearch.IsNullOrWhiteSpace() || i.Name.Contains(nameSearch),
                 i => new ItemDto
@@ -26,7 +26,8 @@ public class ItemService : DataService, IItemService
                     ItemId = i.ItemId,
                     Name = i.Name,
                     IsProcessed = i.IsProcessed
-                })
-            .OrderBy(i => i.Name);
+                });
+            
+        return items.OrderBy(i => i.Name);
     }
 }

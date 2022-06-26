@@ -4,5 +4,5 @@ namespace MyApp.Core.Interfaces;
 
 public interface IItemService
 {
-    IEnumerable<ItemDto> GetItems(string name);
+    Task<IEnumerable<ItemDto>> GetItems(string name);
 }
