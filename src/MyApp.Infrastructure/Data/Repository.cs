@@ -48,7 +48,7 @@ public class Repository<T> : IRepository<T>
         }
     }
 
-    public async Task<T> GetByKey(params object[] keyValues)
+    public async Task<T?> GetByKey(params object[] keyValues)
     {
         return await _db.Set<T>().FindAsync(keyValues);
     }
@@ -121,25 +121,25 @@ public class Repository<T> : IRepository<T>
     }
 
     public async Task<IEnumerable<T>> Get<TInclude1>(
-        Expression<Func<T, bool>> whereCondition,
-        Expression<Func<T, TInclude1>> includeProperty1)
+        Expression<Func<T, bool>>? whereCondition,
+        Expression<Func<T, TInclude1>>? includeProperty1)
     {
         return await this.Get<TInclude1, object>(whereCondition, includeProperty1, null);
     }
 
     public async Task<IEnumerable<T>> Get<TInclude1, TInclude2>(
-        Expression<Func<T, bool>> whereCondition,
-        Expression<Func<T, TInclude1>> includeProperty1,
-        Expression<Func<T, TInclude2>> includeProperty2)
+        Expression<Func<T, bool>>? whereCondition,
+        Expression<Func<T, TInclude1>>? includeProperty1,
+        Expression<Func<T, TInclude2>>? includeProperty2)
     {
         return await this.Get<TInclude1, TInclude2, object>(whereCondition, includeProperty1, includeProperty2, null);
     }
 
     public async Task<IEnumerable<T>> Get<TInclude1, TInclude2, TInclude3>(
-        Expression<Func<T, bool>> whereCondition,
-        Expression<Func<T, TInclude1>> includeProperty1,
-        Expression<Func<T, TInclude2>> includeProperty2,
-        Expression<Func<T, TInclude3>> includeProperty3)
+        Expression<Func<T, bool>>? whereCondition,
+        Expression<Func<T, TInclude1>>? includeProperty1,
+        Expression<Func<T, TInclude2>>? includeProperty2,
+        Expression<Func<T, TInclude3>>? includeProperty3)
     {
         return await this.GetQuery(whereCondition, includeProperty1, includeProperty2, includeProperty3)
             .ToListAsync();
@@ -147,10 +147,10 @@ public class Repository<T> : IRepository<T>
 
     // Breadth traversal of navigation properties
     private IQueryable<T> GetQuery<TInclude1, TInclude2, TInclude3>(
-        Expression<Func<T, bool>> whereCondition,
-        Expression<Func<T, TInclude1>> includeProperty1,
-        Expression<Func<T, TInclude2>> includeProperty2,
-        Expression<Func<T, TInclude3>> includeProperty3)
+        Expression<Func<T, bool>>? whereCondition,
+        Expression<Func<T, TInclude1>>? includeProperty1,
+        Expression<Func<T, TInclude2>>? includeProperty2,
+        Expression<Func<T, TInclude3>>? includeProperty3)
     {
         var query = _db.Set<T>().AsQueryable();
 
@@ -201,7 +201,7 @@ public class Repository<T> : IRepository<T>
         if (includeProperty1 != null)
             query = query.Include(includeProperty1);
         if (includeProperty2 != null)
-            query = (query as IIncludableQueryable<T, ICollection<TInclude1>>).ThenInclude(includeProperty2);
+            query = ((IIncludableQueryable<T, ICollection<TInclude1>>)query).ThenInclude(includeProperty2);
 
         if (whereCondition != null)
             query = query.Where(whereCondition);
@@ -221,9 +221,9 @@ public class Repository<T> : IRepository<T>
         if (includeProperty1 != null)
             query = query.Include(includeProperty1);
         if (includeProperty2 != null)
-            query = (query as IIncludableQueryable<T, ICollection<TInclude1>>).ThenInclude(includeProperty2);
+            query = ((IIncludableQueryable<T, ICollection<TInclude1>>)query).ThenInclude(includeProperty2);
         if (includeProperty3 != null)
-            query = (query as IIncludableQueryable<T, ICollection<TInclude2>>).ThenInclude(includeProperty3);
+            query = ((IIncludableQueryable<T, ICollection<TInclude2>>)query).ThenInclude(includeProperty3);
 
         if (whereCondition != null)
             query = query.Where(whereCondition);

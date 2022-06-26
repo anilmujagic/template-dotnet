@@ -1,15 +1,16 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace MyApp.Common.Extensions;
 
 public static class StringExtensions
 {
-    public static bool IsNullOrEmpty(this string str)
+    public static bool IsNullOrEmpty([NotNullWhen(returnValue: false)] this string? str)
     {
         return string.IsNullOrEmpty(str);
     }
 
-    public static bool IsNullOrWhiteSpace(this string str)
+    public static bool IsNullOrWhiteSpace([NotNullWhen(returnValue: false)] this string? str)
     {
         return string.IsNullOrWhiteSpace(str);
     }

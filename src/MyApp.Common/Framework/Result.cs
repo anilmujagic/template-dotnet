@@ -40,9 +40,9 @@ public class Result
 public class Result<T> : Result
 {
     [DataMember]
-    public T Data { get; set; }
+    public T? Data { get; set; }
 
-    internal Result(bool successful, T data, IEnumerable<Alert> alerts)
+    internal Result(bool successful, T? data, IEnumerable<Alert> alerts)
         : base(successful, alerts)
     {
         Data = data;

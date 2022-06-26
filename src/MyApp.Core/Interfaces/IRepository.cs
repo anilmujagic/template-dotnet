@@ -11,7 +11,7 @@ public interface IRepository<T>
     void Delete(T entity);
     void Delete(IEnumerable<T> entities);
 
-    Task<T> GetByKey(params object[] keyValues);
+    Task<T?> GetByKey(params object[] keyValues);
 
     Task<bool> Exists(Expression<Func<T, bool>> whereCondition);
 

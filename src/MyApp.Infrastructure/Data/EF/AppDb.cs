@@ -9,7 +9,7 @@ namespace MyApp.Infrastructure.Data.EF;
 
 public partial class AppDb : DbContext
 {
-    public virtual DbSet<Item> Items { get; set; }
+    public virtual DbSet<Item> Items { get; set; } = null!;
 
     private void ConfigureEntities(ModelBuilder modelBuilder)
     {

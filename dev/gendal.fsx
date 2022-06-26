@@ -24,6 +24,7 @@ let dbContextNamespace = "MyApp.Infrastructure.Data.EF"
 let dbContextOutputDir = Path.Combine (__SOURCE_DIRECTORY__, "../src/MyApp.Infrastructure/Data/EF")
 let dbContextName = "AppDb"
 let implicitUsings = true
+let nullableRefTypesEnabled = true
 let ignoredTables =
     [
         "database_version"
@@ -253,28 +254,28 @@ let toCamelCase (str : string) = str.[0].ToString().ToLower() + str.Substring(1)
 let dbToCamelCase (str : string) = str |> dbToPascalCase |> toCamelCase
 
 let dbToCodeDataType (dbType : string) isNullable =
-    let codeType =
+    let codeType, isReferenceType =
         match dbType with
-        | "text" -> "string"
-        | "varchar" -> "string"
-        | "json" -> "string"
-        | "jsonb" -> "string"
-        | "bool" -> "bool"
-        | "int2" -> "short"
-        | "int4" -> "int"
-        | "int8" -> "long"
-        | "numeric" -> "decimal"
-        | "decimal" -> "decimal"
-        | "date" -> "DateTime"
-        | "time" -> "TimeSpan"
-        | "timestamp" -> "DateTime"
-        | "uuid" -> "Guid"
-        | "bytea" -> "byte[]"
+        | "text" -> "string", true
+        | "varchar" -> "string", true
+        | "json" -> "string", true
+        | "jsonb" -> "string", true
+        | "bool" -> "bool", false
+        | "int2" -> "short", false
+        | "int4" -> "int", false
+        | "int8" -> "long", false
+        | "numeric" -> "decimal", false
+        | "decimal" -> "decimal", false
+        | "date" -> "DateTime", false
+        | "time" -> "TimeSpan", false
+        | "timestamp" -> "DateTime", false
+        | "uuid" -> "Guid", false
+        | "bytea" -> "byte[]", true
         | _ -> failwithf "Unknown type: %s" dbType
 
-    if isNullable && (codeType <> "string") && (codeType <> "byte[]")
-    then codeType + "?"
-    else codeType
+    if isNullable && (not isReferenceType || nullableRefTypesEnabled)
+    then codeType + "?", isReferenceType
+    else codeType, isReferenceType
 
 let trim (s : string) = s.Trim()
 let trimEnd (s : string) = s.TrimEnd()
@@ -314,9 +315,13 @@ let fkEntity (fkColumnName : string) =
 let generateEntity tableInfo =
     let generateProperties () =
         let generateProperty columnInfo =
-            let codeDataType = dbToCodeDataType columnInfo.DataType columnInfo.IsNullable
+            let (codeDataType, isReferenceType) = dbToCodeDataType columnInfo.DataType columnInfo.IsNullable
             let propertyName = dbToPascalCase columnInfo.ColumnName
-            sprintf "public %s %s { get; set; }" codeDataType propertyName
+            let nrtInit =
+                if not columnInfo.IsNullable && nullableRefTypesEnabled && isReferenceType
+                then " = null!;"
+                else ""
+            sprintf "public %s %s { get; set; }%s" codeDataType propertyName nrtInit
 
         dbSchema.Columns
         |> Seq.filter (fun c -> c.TableName = tableInfo.Name)
@@ -330,7 +335,11 @@ let generateEntity tableInfo =
             let propertyName =
                 dbToPascalCase fkInfo.ColumnName
                 |> fkEntity
-            sprintf "public virtual %s %s { get; set; }" codeDataType propertyName
+            let nrtInit =
+                if nullableRefTypesEnabled
+                then " = null!;"
+                else ""
+            sprintf "public virtual %s %s { get; set; }%s" codeDataType propertyName nrtInit
 
         dbSchema.ForeignKeys
         |> Set.ofList
@@ -416,7 +425,12 @@ let dbContextCode =
         dbSchema.Tables
         |> List.sortBy (fun t -> t.Name)
         |> List.map (fun t ->
-            String.Format("public virtual DbSet<{0}> {1} {{ get; set; }}", entityName t.Name, entitySetName t.Name))
+            String.Format("public virtual DbSet<{0}> {1} {{ get; set; }}{2}",
+                entityName t.Name,
+                entitySetName t.Name,
+                if nullableRefTypesEnabled then " = null!;" else ""
+            )
+        )
         |> indent 1
         |> joinLines
         |> trim

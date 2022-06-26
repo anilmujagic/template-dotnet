@@ -7,7 +7,7 @@ namespace MyApp.Core.Models;
 public partial class Item
 {
     public long ItemId { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     public bool IsProcessed { get; set; }
 
     public Item()

@@ -15,7 +15,7 @@ public class ItemService : DataService, IItemService
     {
     }
 
-    public async Task<IEnumerable<ItemDto>> GetItems(string nameSearch)
+    public async Task<IEnumerable<ItemDto>> GetItems(string? nameSearch)
     {
         using var uow = NewUnitOfWork();
         var items = await NewRepository<Item>(uow)

@@ -19,7 +19,7 @@ public class AppSettingsConfigurationProvider : IAppConfigurationProvider
             .Build();
     }
 
-    public string GetString(string settingKey, string defaultValue = null)
+    public string? GetString(string settingKey, string? defaultValue = null)
     {
         var value = this.GetSetting(settingKey);
         if (!value.IsNullOrEmpty())
