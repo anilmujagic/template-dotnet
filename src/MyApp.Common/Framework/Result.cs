@@ -29,11 +29,11 @@ public class Result
     public static Result<T> Success<T>(T data, params Alert[] alerts) => new Result<T>(true, data, alerts);
     public static Result<T> Success<T>(T data, IEnumerable<Alert> alerts) => new Result<T>(true, data, alerts);
     public static Result<T> Failure<T>(IEnumerable<Alert> alerts) =>
-        new Result<T>(false, default(T), alerts);
+        new Result<T>(false, default, alerts);
     public static Result<T> Failure<T>(params string[] errors) =>
-        new Result<T>(false, default(T), errors.Select(e => Alert.Error(e)));
+        new Result<T>(false, default, errors.Select(e => Alert.Error(e)));
     public static Result<T> Failure<T>(IEnumerable<string> errors) =>
-        new Result<T>(false, default(T), errors.Select(e => Alert.Error(e)));
+        new Result<T>(false, default, errors.Select(e => Alert.Error(e)));
 }
 
 [DataContract]
@@ -52,7 +52,7 @@ public class Result<T> : Result
     {
         return new Result<TNewType>(
             Successful,
-            Data == null ? default(TNewType) : mapper(Data),
+            Data == null ? default : mapper(Data),
             Alerts);
     }
 }
