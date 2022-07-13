@@ -19,7 +19,7 @@ if [ -z "$old_name" ] || [ -z "$new_name" ]; then
     exit 1;
 fi
 
-if ! [[ $new_name =~ ^[A-Za-z][A-Za-z0-9]+$ ]]; then
+if ! [[ $new_name =~ ^[A-Za-z][A-Za-z0-9\.]+$ ]]; then
     echo "Project name must contain only letters, numbers and underscores (e.g. MyAwesomeApp)."
     popd
     exit 1;
@@ -29,8 +29,8 @@ echo "Old name: $old_name"
 echo "New name: $new_name"
 
 # Derive DB name
-old_db_name=$(echo "$old_name" | sed -E 's/([A-Z])/_\1/g' | sed -E 's/^_//' | tr '[:upper:]' '[:lower:]')
-new_db_name=$(echo "$new_name" | sed -E 's/([A-Z])/_\1/g' | sed -E 's/^_//' | tr '[:upper:]' '[:lower:]')
+old_db_name=$(echo "$old_name" | sed -E 's/([A-Z])/_\1/g' | sed -E 's/^_//' | sed -E 's/\./_/' | tr '[:upper:]' '[:lower:]')
+new_db_name=$(echo "$new_name" | sed -E 's/([A-Z])/_\1/g' | sed -E 's/^_//' | sed -E 's/\./_/' | tr '[:upper:]' '[:lower:]')
 echo "Old DB name: $old_db_name"
 echo "New DB name: $new_db_name"
 
