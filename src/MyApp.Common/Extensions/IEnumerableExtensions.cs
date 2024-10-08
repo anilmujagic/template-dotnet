@@ -47,7 +47,7 @@ public static class IEnumerableExtensions
         if (enumerable.IsNullOrEmpty() || elements.IsNullOrEmpty())
             return false;
 
-        return elements.Any(enumerable.Contains);
+        return elements.All(enumerable.Contains);
     }
 
     public static bool None<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
